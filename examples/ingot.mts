@@ -17,9 +17,15 @@ class Pixel extends SceneObj {
 	}
 
 	public override render(frame: Frame, frameIndex: number) {
-		if (frameIndex > 1) return false
+		if (frameIndex > 64) return false
 		const X = this.x
-		const Y = this.y
+		let Y = this.y + (
+			frameIndex < this.x ? 0 : frameIndex - this.x
+		)
+		if (Y > 32) {
+			Y -= 32
+			if (Y > this.y) Y = this.y
+		}
 		const C = new RGBA(this.c)
 			.color
 
