@@ -17,11 +17,39 @@ class Pixel extends SceneObj {
 	}
 
 	public override render(frame: Frame, frameIndex: number) {
-		if (frameIndex > 1) return false
-		const X = this.x
-		const Y = this.y
-		const C = new RGBA(this.c)
-			.color
+		if (frameIndex > Math.PI * 20) return false
+		const X = this.x + 8
+		const Y = this.y + 8
+		const C = RGBA.from(
+			new RGBA(
+				originalIngot.getPixelAt(
+					this.x,
+					this.y
+						+ Math.round(Math.sin(this.x + frameIndex + 0)),
+				),
+			).r,
+			new RGBA(
+				originalIngot.getPixelAt(
+					this.x,
+					this.y
+						+ Math.round(Math.sin(this.x + frameIndex + 2)),
+				),
+			).g,
+			new RGBA(
+				originalIngot.getPixelAt(
+					this.x,
+					this.y
+						+ Math.round(Math.sin(this.x + frameIndex + 4)),
+				),
+			).b,
+			new RGBA(
+				originalIngot.getPixelAt(
+					this.x,
+					this.y
+						+ Math.round(Math.sin(this.x + frameIndex + 6)),
+				),
+			).a,
+		).color
 
 		// Antialising ahh
 		frame.setPixelAt(Math.floor(X), Math.floor(Y), C)
@@ -32,13 +60,7 @@ class Pixel extends SceneObj {
 }
 
 const scene = new Scene(32, 32, 50, [
-	...originalIngot.iterateWithColors().map(([x, y, c]) =>
-		new Pixel(
-			x + 8,
-			y + 8,
-			c,
-		)
-	),
+	...originalIngot.iterateWithColors().map(([x, y, c]) => new Pixel(x, y, c)),
 ])
 
 const gif = scene.render()
