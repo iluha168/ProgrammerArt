@@ -1,0 +1,20 @@
+{
+	"imports": {
+		"imagescript": "npm:imagescript@^1.3.1"
+	},
+	"fmt": {
+		"bracePosition": "sameLine",
+		"indentWidth": 4,
+		"newLineKind": "lf",
+		"nextControlFlowPosition": "maintain",
+		"singleBodyPosition": "maintain",
+		"operatorPosition": "nextLine",
+		"quoteProps": "consistent",
+		"useTabs": true,
+		"useBraces": "preferNone",
+		"trailingCommas": "onlyMultiLine",
+		"singleQuote": false,
+		"spaceAround": false,
+		"semiColons": false
+	}
+}
