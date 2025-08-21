@@ -19,7 +19,9 @@ class Pixel extends SceneObj {
 	public override render(frame: Frame, frameIndex: number) {
 		if (frameIndex > Math.PI * 20) return false
 		const X = this.x + 8
-		const Y = this.y + 8
+		let Y = this.y + 8 + (
+			frameIndex < this.x ? 0 : frameIndex - this.x
+		)
 		const C = RGBA.from(
 			new RGBA(
 				originalIngot.getPixelAt(
@@ -50,6 +52,10 @@ class Pixel extends SceneObj {
 				),
 			).a,
 		).color
+		if (Y > 32) {
+			Y -= 32
+			if (Y > this.y + 8) Y = this.y + 8
+		}
 
 		// Antialising ahh
 		frame.setPixelAt(Math.floor(X), Math.floor(Y), C)
