@@ -17,11 +17,12 @@ class Pixel extends SceneObj {
 	}
 
 	public override render(frame: Frame, frameIndex: number) {
-		if (frameIndex > 1) return false
+		if (frameIndex > Math.PI * 2 * 7 * 4) return false
 		const X = this.x
+			+ 0.4 * (this.x - 16) * (Math.sin(0.7 * frameIndex) + 0.5)
 		const Y = this.y
-		const C = new RGBA(this.c)
-			.color
+			+ 0.4 * (this.y - 16) * (Math.cos(0.4 * frameIndex) + 0.5)
+		const C = new RGBA(this.c).color
 
 		// Antialising ahh
 		frame.setPixelAt(Math.floor(X), Math.floor(Y), C)
