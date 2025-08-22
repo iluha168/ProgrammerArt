@@ -1,0 +1,36 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Formatter (Watch)",
+			"command": "deno",
+			"args": [
+				"fmt",
+				"--watch"
+			],
+			"isBackground": true,
+			"runOptions": {
+				"instanceLimit": 1,
+				"instancePolicy": "terminateOldest",
+				"runOn": "folderOpen"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Renderer (Watch)",
+			"command": "deno",
+			"args": [
+				"run",
+				"-A",
+				"${workspaceFolder}/dx/autoExamples.mts"
+			],
+			"isBackground": true,
+			"runOptions": {
+				"instanceLimit": 1,
+				"instancePolicy": "terminateOldest",
+				"runOn": "folderOpen"
+			},
+			"problemMatcher": []
+		}
+	]
+}
