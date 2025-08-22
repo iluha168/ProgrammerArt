@@ -1,10 +1,15 @@
+import { PaddingEffect } from "../engine/anim/effect/PaddingEffect.mts"
 import { OuterOutlineShader } from "../engine/anim/effect/shader/OuterOutlineShader.mts"
 import { LoadStaticAssetAnim } from "../engine/anim/load/StaticAssetAnim.mts"
 import { GifRenderer } from "../engine/renderers/GIF.mts"
 
 const gif = GifRenderer.render(
 	new OuterOutlineShader(
-		await LoadStaticAssetAnim("examples/ingot.png"),
+		new PaddingEffect(
+			await LoadStaticAssetAnim("examples/ingot.png"),
+			4n,
+			4n,
+		),
 	),
 )
 gif.resize(gif.width * 8, gif.height * 8, "RESIZE_NEAREST_NEIGHBOR")
