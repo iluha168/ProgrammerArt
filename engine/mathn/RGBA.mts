@@ -25,6 +25,15 @@ export class RGBA {
 		)
 	}
 
+	add(other: RGBA): RGBA {
+		return RGBA.from(
+			this.r + other.r,
+			this.g + other.g,
+			this.b + other.b,
+			this.a + other.a,
+		)
+	}
+
 	static from(r: number, g: number, b: number, a: number): RGBA {
 		// deno-fmt-ignore
 		return new RGBA(

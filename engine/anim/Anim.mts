@@ -23,4 +23,8 @@ export abstract class Anim {
 	}
 
 	public abstract render(t: bigint, onto?: Frame): Frame
+
+	public pipe<T>(consumer: (anim: this) => T): NoInfer<T> {
+		return consumer(this)
+	}
 }
