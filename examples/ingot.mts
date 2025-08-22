@@ -1,9 +1,9 @@
-import { InnerOutlineShader } from "../engine/anim/effect/shader/InnerOutlineShader.mts"
+import { OuterOutlineShader } from "../engine/anim/effect/shader/OuterOutlineShader.mts"
 import { LoadStaticAssetAnim } from "../engine/anim/load/StaticAssetAnim.mts"
 import { GifRenderer } from "../engine/renderers/GIF.mts"
 
 const gif = GifRenderer.render(
-	new InnerOutlineShader(
+	new OuterOutlineShader(
 		await LoadStaticAssetAnim("examples/ingot.png"),
 	),
 )
