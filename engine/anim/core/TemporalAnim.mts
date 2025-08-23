@@ -1,5 +1,5 @@
-import { Anim } from "./Anim.mts"
-import { max } from "../mathn/mod.mts"
+import { Anim } from "../Anim.mts"
+import { max } from "../../mathn/mod.mts"
 
 export class TemporalAnim<P> extends Anim {
 	protected readonly children: Anim[]
@@ -24,6 +24,6 @@ export class TemporalAnim<P> extends Anim {
 	}
 
 	public override writeFrame(t: bigint, onto = this.blankFrame()) {
-		return this.children[Number(t)].render(1n, onto)
+		return this.children[Number(t % this.f)].render(1n, onto)
 	}
 }

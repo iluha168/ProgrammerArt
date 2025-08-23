@@ -1,5 +1,5 @@
-import { Anim } from "./Anim.mts"
-import { LCM, max } from "../mathn/mod.mts"
+import { Anim } from "../Anim.mts"
+import { LCM, max } from "../../mathn/mod.mts"
 
 export class GroupAnim extends Anim {
 	constructor(
