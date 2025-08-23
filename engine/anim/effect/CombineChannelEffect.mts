@@ -3,7 +3,7 @@ import { GroupAnim } from "../GroupAnim.mts"
 import { RGBA } from "../../mathn/mod.mts"
 
 export class CombineChannelEffect extends GroupAnim {
-	public override render(t: bigint, onto = this.blankFrame()): Frame {
+	public override writeFrame(t: bigint, onto = this.blankFrame()): Frame {
 		const ontoC = new Uint32Array(onto.bitmap.buffer)
 		for (const ch of this.children) {
 			const merge = ch.render(t, this.blankFrame())

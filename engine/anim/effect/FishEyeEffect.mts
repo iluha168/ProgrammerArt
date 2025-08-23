@@ -13,7 +13,7 @@ export class FishEyeEffect extends Anim {
 		)
 	}
 
-	public override render(t: bigint, onto = this.blankFrame()): Frame {
+	protected override writeFrame(t: bigint, onto = this.blankFrame()): Frame {
 		return this.child.render(t, onto).fisheye(this.radius)
 	}
 }

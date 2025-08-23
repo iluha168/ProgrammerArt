@@ -10,7 +10,7 @@ export class StaticAssetAnim extends Anim {
 		)
 	}
 
-	public override render(_: bigint, onto = this.blankFrame()) {
+	public override writeFrame(_: bigint, onto = this.blankFrame()) {
 		return onto.composite(Frame.from(
 			this.img,
 			Number(this.f),

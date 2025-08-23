@@ -15,7 +15,7 @@ export abstract class Shader extends Anim {
 		color: number,
 	]
 
-	public override render(t: bigint, onto = this.blankFrame()): Frame {
+	public override writeFrame(t: bigint, onto = this.blankFrame()): Frame {
 		const childRender = this.child.render(t)
 		const output = Frame.from(childRender.clone())
 		for (let x = 1; x <= this.w; x++) {

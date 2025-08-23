@@ -15,7 +15,7 @@ export class SplitChannelEffect extends Anim {
 		)
 	}
 
-	public override render(t: bigint, onto = this.blankFrame()): Frame {
+	public override writeFrame(t: bigint, onto = this.blankFrame()): Frame {
 		return this.child
 			.render(t, onto)
 			.red(this.r)

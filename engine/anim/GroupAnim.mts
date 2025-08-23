@@ -12,7 +12,7 @@ export class GroupAnim extends Anim {
 		)
 	}
 
-	public override render(t: bigint, onto = this.blankFrame()) {
+	public override writeFrame(t: bigint, onto = this.blankFrame()) {
 		for (const ch of this.children)
 			onto = ch.render(t, onto)
 		return onto

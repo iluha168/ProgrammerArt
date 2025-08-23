@@ -23,7 +23,7 @@ export class TemporalAnim<P> extends Anim {
 		this.children = children
 	}
 
-	public override render(t: bigint, onto = this.blankFrame()) {
+	public override writeFrame(t: bigint, onto = this.blankFrame()) {
 		return this.children[Number(t)].render(1n, onto)
 	}
 }

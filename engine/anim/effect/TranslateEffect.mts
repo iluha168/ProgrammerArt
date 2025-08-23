@@ -14,7 +14,7 @@ export class TranslateEffect extends Anim {
 		)
 	}
 
-	public override render(t: bigint, onto = this.blankFrame()): Frame {
+	public override writeFrame(t: bigint, onto = this.blankFrame()): Frame {
 		return onto.composite(
 			this.child.render(t),
 			Number(this.dx),
