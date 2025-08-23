@@ -18,8 +18,8 @@ class Pixel extends SceneObj {
 
 	public override render(frame: Frame, frameIndex: number) {
 		if (frameIndex > Math.PI * 20) return false
-		const X = this.x + 8
-		const Y = this.y + 8
+		const X = this.x
+		const Y = this.y
 		const C = RGBA.from(
 			new RGBA(
 				originalIngot.getPixelAt(
@@ -59,7 +59,7 @@ class Pixel extends SceneObj {
 	}
 }
 
-const scene = new Scene(32, 32, 50, [
+const scene = new Scene(16, 16, 50, [
 	...originalIngot.iterateWithColors().map(([x, y, c]) => new Pixel(x, y, c)),
 ])
 
