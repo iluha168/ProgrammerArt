@@ -1,3 +1,4 @@
+import { Frame } from "imagescript"
 import { Anim } from "../../Anim.mts"
 import { Shader } from "./Shader.mts"
 
@@ -12,7 +13,7 @@ export class VerticalWaveShader extends Shader {
 		super(
 			BigInt(Math.round(Number(child.f * 2n * slow) * Math.PI)),
 			child.w,
-			child.h + BigInt(Math.floor(amplitude * 2)) - 1n,
+			child.h,
 		)
 	}
 
@@ -20,15 +21,20 @@ export class VerticalWaveShader extends Shader {
 		t: bigint,
 		x: number,
 		y: number,
-		color: number,
+		_: number,
+		childRender: Frame,
 	) => [
 		x,
-		y
-		+ (Math.sin(
-				(
-					x * this.frequency + Number(t) / Number(this.slow)
-				) + this.phase,
-			) + 1) * this.amplitude,
-		color,
+		y,
+		childRender.getPixelAt(
+			x,
+			y + Math.round(
+				Math.sin(
+					(
+						x * this.frequency + Number(t) / Number(this.slow)
+					) + this.phase,
+				) * this.amplitude,
+			),
+		),
 	] as const
 }

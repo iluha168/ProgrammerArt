@@ -17,24 +17,21 @@ export abstract class Shader extends Anim {
 
 	public override writeFrame(t: bigint, onto = this.blankFrame()): Frame {
 		const childRender = this.child.render(t)
-		const output = Frame.from(childRender.clone())
-		for (let x = 1; x <= this.w; x++) {
-			for (let y = 1; y <= this.h; y++) {
-				try {
-					output.setPixelAt(
-						...this.shader(
-							t,
-							x,
-							y,
-							childRender.getPixelAt(x, y),
-							childRender,
-						),
-					)
-				} catch (e) {
-					if (!(e instanceof RangeError)) throw e
-				}
+		for (const [x, y, c] of childRender.iterateWithColors()) {
+			try {
+				onto.setPixelAt(
+					...this.shader(
+						t,
+						x,
+						y,
+						c,
+						childRender,
+					),
+				)
+			} catch (e) {
+				if (!(e instanceof RangeError)) throw e
 			}
 		}
-		return onto.composite(output)
+		return onto
 	}
 }
