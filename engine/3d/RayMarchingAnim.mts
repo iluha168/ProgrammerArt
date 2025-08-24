@@ -1,7 +1,6 @@
 import { Frame } from "imagescript"
 import { Anim } from "../anim/Anim.mts"
-import { RGBA, Vec, Vec3 } from "../mathn/mod.mts"
-import { sigmoid } from "../mathn/sigmoid.mts"
+import { Nums, RGBA, sigmoid, Vec } from "../mathn/mod.mts"
 
 export class RayMarchingAnim extends Anim {
 	static MAX_STEPS: number = 100
@@ -11,9 +10,9 @@ export class RayMarchingAnim extends Anim {
 	constructor(
 		w: bigint,
 		h: bigint,
-		protected readonly distanceToScene: (point: Vec3) => number,
-		protected readonly lightSource: Vec3 = new Vec([0, 0, 0]),
-		protected readonly camera: Vec3 = new Vec([0, 0, 0]),
+		protected readonly distanceToScene: (point: Vec<3>) => number,
+		protected readonly lightSource: Vec<3> = new Vec<3>([0, 0, 0]),
+		protected readonly camera: Vec<3> = new Vec<3>([0, 0, 0]),
 	) {
 		super(
 			1n,
@@ -33,7 +32,7 @@ export class RayMarchingAnim extends Anim {
 					.subVec(sizeHalf)
 					.mul(2)
 					.mulVec(sizeInv)
-				const rayDir = new Vec([...uv.values, 2]).normalize()
+				const rayDir = new Vec([...uv.values, 2] as Nums<3>).normalize()
 				const objectDistance = this.bumpIntoObject(this.camera, rayDir)
 				if (objectDistance > RayMarchingAnim.FAR_DIST) {
 					onto.setPixelAt(x + 1, y + 1, 0)
@@ -54,7 +53,7 @@ export class RayMarchingAnim extends Anim {
 		return onto
 	}
 
-	protected bumpIntoObject(origin: Vec3, direction: Vec3) {
+	protected bumpIntoObject(origin: Vec<3>, direction: Vec<3>) {
 		let distance = 0
 		for (let i = 0; i < RayMarchingAnim.MAX_STEPS; i++) {
 			const pos = origin.addVec(direction.mul(distance))
@@ -64,7 +63,7 @@ export class RayMarchingAnim extends Anim {
 		return distance
 	}
 
-	protected luminosityAt(point: Vec3, lightSourceAt: Vec3) {
+	protected luminosityAt(point: Vec<3>, lightSourceAt: Vec<3>) {
 		const lightSourceDirection = lightSourceAt.subVec(point)
 		const rayTowardsLightSource = lightSourceDirection.normalize()
 		const normal = this.normalAt(point)
@@ -80,21 +79,21 @@ export class RayMarchingAnim extends Anim {
 		return luminosity
 	}
 
-	protected normalAt(point: Vec3): Vec3 {
+	protected normalAt(point: Vec<3>): Vec<3> {
 		const dist = this.distanceToScene(point)
 		const [x, y, z] = point.values
-		return new Vec([
+		return new Vec<3>([
 			dist
 			- this.distanceToScene(
-				new Vec([x - RayMarchingAnim.SURF_DIST, y, z]),
+				new Vec<3>([x - RayMarchingAnim.SURF_DIST, y, z]),
 			),
 			dist
 			- this.distanceToScene(
-				new Vec([x, y - RayMarchingAnim.SURF_DIST, z]),
+				new Vec<3>([x, y - RayMarchingAnim.SURF_DIST, z]),
 			),
 			dist
 			- this.distanceToScene(
-				new Vec([x, y, z - RayMarchingAnim.SURF_DIST]),
+				new Vec<3>([x, y, z - RayMarchingAnim.SURF_DIST]),
 			),
 		]).normalize()
 	}
