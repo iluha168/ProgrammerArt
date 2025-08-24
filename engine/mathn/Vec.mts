@@ -1,9 +1,14 @@
-export type VecLen = 2 | 3
-export type Nums<Len extends VecLen> = number[] & { length: Len }
+export type VecLen = 2 | 3 | 4
+export type Tuple<T, N extends number> = N extends N
+	? number extends N ? T[] : _TupleOf<T, N, []>
+	: never
+type _TupleOf<T, N extends number, R extends unknown[]> = R["length"] extends N
+	? R
+	: _TupleOf<T, N, [T, ...R]>
 
 export class Vec<Len extends VecLen> {
 	constructor(
-		public values: Nums<Len>,
+		public values: Tuple<number, Len>,
 	) {
 		if (values.some(Number.isNaN)) {
 			throw new Error(
@@ -13,7 +18,7 @@ export class Vec<Len extends VecLen> {
 	}
 
 	protected map(cb: (v: number, i: number) => number): Vec<Len> {
-		return new Vec(this.values.map(cb) as Nums<Len>)
+		return new Vec(this.values.map(cb) as Tuple<number, Len>)
 	}
 
 	protected mapVec(
@@ -45,6 +50,10 @@ export class Vec<Len extends VecLen> {
 
 	addVec(other: Vec<Len>) {
 		return this.mapVec(other, (a, b) => a + b)
+	}
+
+	sub(n: number) {
+		return this.map((v) => v - n)
 	}
 
 	subVec(other: Vec<Len>) {

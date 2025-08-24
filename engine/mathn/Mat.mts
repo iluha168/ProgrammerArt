@@ -1,6 +1,6 @@
-import { Nums, Vec, VecLen } from "./Vec.mts"
+import { Tuple, Vec, VecLen } from "./Vec.mts"
 
-export type Vecs<Len extends VecLen> = Vec<VecLen>[] & { length: Len }
+export type Vecs<Len extends VecLen> = Tuple<Vec<Len>, Len>
 
 export class Mat<Len extends VecLen> {
 	constructor(
@@ -20,28 +20,26 @@ export class Mat<Len extends VecLen> {
 		const sp = Math.sin(pitch)
 		const cg = Math.cos(roll)
 		const sr = Math.sin(roll)
-		return new Mat<3>(
-			[
-				new Vec<3>([
-					cy * cp,
-					cy * sp * sr - sy * cg,
-					cy * sp * cg + sy * sr,
-				]),
-				new Vec<3>([
-					sy * cp,
-					sy * sp * sr + cy * cg,
-					sy * sp * cg - cy * sr,
-				]),
-				new Vec<3>([
-					-sp,
-					cp * sr,
-					cp * cg,
-				]),
-			] as const,
-		)
+		return new Mat([
+			new Vec([
+				cy * cp,
+				cy * sp * sr - sy * cg,
+				cy * sp * cg + sy * sr,
+			]),
+			new Vec([
+				sy * cp,
+				sy * sp * sr + cy * cg,
+				sy * sp * cg - cy * sr,
+			]),
+			new Vec([
+				-sp,
+				cp * sr,
+				cp * cg,
+			]),
+		])
 	}
 
 	mulVec(b: Vec<Len>): Vec<Len> {
-		return new Vec(this.vecs.map((a) => a.dot(b)) as Nums<Len>)
+		return new Vec(this.vecs.map((a) => a.dot(b)) as Tuple<number, Len>)
 	}
 }

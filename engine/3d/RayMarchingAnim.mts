@@ -1,6 +1,6 @@
 import { Frame } from "imagescript"
 import { Anim } from "../anim/Anim.mts"
-import { Nums, RGBA, Vec } from "../mathn/mod.mts"
+import { RGBA, Vec } from "../mathn/mod.mts"
 
 type Options = Readonly<{
 	lightSource: Vec<3>
@@ -8,6 +8,8 @@ type Options = Readonly<{
 
 	camera: Vec<3>
 	isometric: boolean
+
+	antialising: 1 | 2 | 4 | 8 | 16 | 32
 }>
 
 const defaultOptions: Required<Options> = {
@@ -16,6 +18,8 @@ const defaultOptions: Required<Options> = {
 
 	camera: new Vec<3>([0, 0, 0]),
 	isometric: false,
+
+	antialising: 1,
 }
 
 export class RayMarchingAnim extends Anim {
@@ -24,6 +28,9 @@ export class RayMarchingAnim extends Anim {
 	static FAR_DIST: number = 100
 
 	protected readonly options: Options
+	protected readonly size: Vec<2>
+	protected readonly sizeHalf: Vec<2>
+	protected readonly sizeInv: Vec<2>
 
 	constructor(
 		w: bigint,
@@ -33,49 +40,64 @@ export class RayMarchingAnim extends Anim {
 	) {
 		super(1n, w, h)
 		this.options = { ...defaultOptions, ...options }
+
+		this.size = new Vec<2>([Number(this.w), Number(this.h)])
+		this.sizeHalf = this.size.mul(0.5)
+		this.sizeInv = this.size.inv()
 	}
 	protected override writeFrame(_: bigint, onto = this.blankFrame()): Frame {
-		const size = new Vec<2>([Number(this.w), Number(this.h)])
-		const sizeHalf = size.mul(0.5)
-		const sizeInv = size.inv()
-
 		for (let x = 0; x < this.w; x++) {
-			for (let y = 0; y < this.h; y++) {
-				// 2 * (xy - wh/2) / wh		-->	uv == [-1, 1)
-				const uv = new Vec<2>([x, y])
-					.subVec(sizeHalf)
-					.mul(2)
-					.mulVec(sizeInv)
-				const rayDir = this.options.isometric
-					? new Vec<3>([0, 0, 1])
-					: new Vec([...uv.values, 2] as Nums<3>).normalize()
-				const rayOrigin = this.options.isometric
-					? this.options.camera.addVec(
-						new Vec([...uv.values, 0] as Nums<3>),
-					)
-					: this.options.camera
-				const objectDistance = this.bumpIntoObject(
-					rayOrigin,
-					rayDir,
-				)
-				if (objectDistance > RayMarchingAnim.FAR_DIST) {
-					onto.setPixelAt(x + 1, y + 1, 0)
-					continue
-				}
-
-				const objectPosition = rayOrigin.addVec(
-					rayDir.mul(objectDistance),
-				)
-				const lum = 0xFF
-					* this.luminosityAt(
-						objectPosition,
-						this.options.lightSource,
-					)
-				const { color } = RGBA.from(lum, lum, lum, 0xFF)
-				onto.setPixelAt(x + 1, y + 1, color)
-			}
+			for (let y = 0; y < this.h; y++)
+				onto.setPixelAt(x + 1, y + 1, this.getPixelNx(x, y).color)
 		}
 		return onto
+	}
+
+	protected getPixelNx(x: number, y: number): RGBA {
+		let cumulative = new Vec<4>([0, 0, 0, 0])
+		for (let dx = 0; dx < this.options.antialising; dx++) {
+			for (let dy = 0; dy < this.options.antialising; dy++) {
+				const { r, g, b, a } = this.getPixel1x(
+					x + dx / this.options.antialising,
+					y + dy / this.options.antialising,
+				)
+				cumulative = cumulative.addVec(new Vec<4>([r, g, b, a]))
+			}
+		}
+		cumulative = cumulative.mul(this.options.antialising ** -2)
+		return RGBA.from(...cumulative.values)
+	}
+
+	protected getPixel1x(x: number, y: number): RGBA {
+		// 2 * (xy - wh/2) / wh		-->	uv == [-1, 1)
+		const uv = new Vec<2>([x, y])
+			.subVec(this.sizeHalf)
+			.mul(2)
+			.mulVec(this.sizeInv)
+		const rayDir = this.options.isometric
+			? new Vec<3>([0, 0, 1])
+			: new Vec<3>([...uv.values, 2]).normalize()
+		const rayOrigin = this.options.isometric
+			? this.options.camera.addVec(
+				new Vec<3>([...uv.values, 0]),
+			)
+			: this.options.camera
+		const objectDistance = this.bumpIntoObject(
+			rayOrigin,
+			rayDir,
+		)
+		if (objectDistance > RayMarchingAnim.FAR_DIST)
+			return new RGBA(0x00000000)
+
+		const objectPosition = rayOrigin.addVec(
+			rayDir.mul(objectDistance),
+		)
+		const lum = 0xFF
+			* this.luminosityAt(
+				objectPosition,
+				this.options.lightSource,
+			)
+		return RGBA.from(lum, lum, lum, 0xFF)
 	}
 
 	protected bumpIntoObject(origin: Vec<3>, direction: Vec<3>) {
