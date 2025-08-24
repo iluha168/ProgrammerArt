@@ -1,25 +1,23 @@
 import { RayMarchingAnim } from "../engine/3d/RayMarchingAnim.mts"
 import { box } from "../engine/3d/SDF.mts"
-import { TemporalAnim } from "../engine/anim/core/TemporalAnim.mts"
 import { Mat, Vec } from "../engine/mathn/mod.mts"
 import { GifRenderer } from "../engine/renderers/GifRenderer.mts"
 
-const scene = new TemporalAnim(
-	40n,
-	(t) => 2 * Math.PI * Number(t) / 40,
-	(t) =>
-		new RayMarchingAnim(
-			32n,
-			32n,
-			(pos) =>
-				box(
-					Mat.rot3(0, t, -0.2).mulVec(
-						pos.subVec(new Vec<3>([0, 0.1, 3])),
-					),
-					new Vec<3>([0.2, 0.2, 1]),
-				),
-			new Vec<3>([-1, 0, 1]),
+const scene = new RayMarchingAnim(
+	16n,
+	16n,
+	(pos) =>
+		box(
+			Mat.rot3(0, -1, -0.6).mulVec(
+				pos.subVec(new Vec<3>([0, -0.1, 3])),
+			),
+			new Vec<3>([0.4, 0.25, 0.8]),
 		),
+	{
+		lightSource: new Vec<3>([-0.8, -0.8, 0]),
+		ambientLuminosity: 0.5,
+		isometric: true,
+	},
 )
 
 const gif = GifRenderer.render(scene)
