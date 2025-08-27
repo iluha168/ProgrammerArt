@@ -1,7 +1,7 @@
 import { RayMarchingAnim } from "../engine/3d/RayMarchingAnim.mts"
 import { wireframe } from "../engine/3d/SDF.mts"
 import { Mat, Vec } from "../engine/mathn/mod.mts"
-import { GifRenderer } from "../engine/renderers/GifRenderer.mts"
+import { ExamplesRenderer } from "./ExamplesRenderer.mts"
 
 const scene = new RayMarchingAnim(
 	16n,
@@ -22,6 +22,4 @@ const scene = new RayMarchingAnim(
 	},
 )
 
-const gif = GifRenderer.render(scene)
-gif.resize(gif.width * 8, gif.height * 8, "RESIZE_NEAREST_NEIGHBOR")
-await Deno.writeFile("out.gif", await gif.encode(100))
+await ExamplesRenderer.render(scene)

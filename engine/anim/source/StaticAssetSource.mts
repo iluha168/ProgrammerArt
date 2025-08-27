@@ -1,7 +1,7 @@
 import { Frame, Image } from "imagescript"
 import { Anim } from "../Anim.mts"
 
-export class StaticAssetAnim extends Anim {
+export class StaticAssetSource extends Anim {
 	constructor(protected img: Image) {
 		super(
 			1n,
@@ -21,8 +21,8 @@ export class StaticAssetAnim extends Anim {
 	}
 }
 
-export const LoadStaticAssetAnim = (path: string) =>
+export const LoadStaticAssetSource = (path: string) =>
 	Deno
 		.readFile(path)
 		.then(Image.decode)
-		.then((img) => new StaticAssetAnim(img))
+		.then((img) => new StaticAssetSource(img))
