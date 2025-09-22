@@ -20,3 +20,12 @@ export const wireframe = (point: Vec<3>, size: Vec<3>, thickness: number) => {
 		a3.max(0).length() + Math.min(a3.maxSide(), 0.0),
 	)
 }
+
+export const cylinder = (point: Vec<3>, height: number, radius: number) => {
+	const d = new Vec<2>([
+		new Vec<2>([point.values[0], point.values[2]]).length(),
+		point.values[1],
+	]).abs().subVec(new Vec<2>([radius, height]))
+	return Math.min(Math.max(d.values[0], d.values[1]), 0)
+		+ d.max(0.0).length()
+}
