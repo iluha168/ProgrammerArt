@@ -1,9 +1,9 @@
-import { RayMarchingAnim } from "../engine/3d/RayMarchingAnim.mts"
+import { RayMarchingSource } from "../engine/anim/source/RayMarchingSource.mts"
 import { wireframe } from "../engine/3d/SDF.mts"
 import { Mat, Vec } from "../engine/mathn/mod.mts"
 import { ExamplesRenderer } from "./ExamplesRenderer.mts"
 
-const scene = new RayMarchingAnim(
+const scene = new RayMarchingSource(
 	16n,
 	16n,
 	(pos) =>

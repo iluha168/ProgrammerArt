@@ -1,6 +1,6 @@
 import { Frame } from "imagescript"
-import { Anim } from "../anim/Anim.mts"
-import { RGBA, Vec } from "../mathn/mod.mts"
+import { Anim } from "../Anim.mts"
+import { RGBA, Vec } from "../../mathn/mod.mts"
 
 type Options = Readonly<{
 	lightSource: Vec<3>
@@ -22,7 +22,7 @@ const defaultOptions: Required<Options> = {
 	antialising: 1,
 }
 
-export class RayMarchingAnim extends Anim {
+export class RayMarchingSource extends Anim {
 	static MAX_STEPS: number = 100
 	static SURF_DIST: number = 1e-10
 	static FAR_DIST: number = 100
@@ -86,7 +86,7 @@ export class RayMarchingAnim extends Anim {
 			rayOrigin,
 			rayDir,
 		)
-		if (objectDistance > RayMarchingAnim.FAR_DIST)
+		if (objectDistance > RayMarchingSource.FAR_DIST)
 			return new RGBA(0x00000000)
 
 		const objectPosition = rayOrigin.addVec(
@@ -102,10 +102,10 @@ export class RayMarchingAnim extends Anim {
 
 	protected bumpIntoObject(origin: Vec<3>, direction: Vec<3>) {
 		let distance = 0
-		for (let i = 0; i < RayMarchingAnim.MAX_STEPS; i++) {
+		for (let i = 0; i < RayMarchingSource.MAX_STEPS; i++) {
 			const pos = origin.addVec(direction.mul(distance))
 			distance += this.distanceToScene(pos)
-			if (Math.abs(distance) < RayMarchingAnim.SURF_DIST) break
+			if (Math.abs(distance) < RayMarchingSource.SURF_DIST) break
 		}
 		return distance
 	}
@@ -117,7 +117,7 @@ export class RayMarchingAnim extends Anim {
 		const normal = this.normalAt(point)
 		let luminosity = (normal.dot(rayTowardsLightSource) + 1) / 2
 		const distanceToLightSource = this.bumpIntoObject(
-			normal.mul(RayMarchingAnim.SURF_DIST * 2).addVec(point),
+			normal.mul(RayMarchingSource.SURF_DIST * 2).addVec(point),
 			rayTowardsLightSource,
 		)
 		if (distanceToLightSource < lightSourceDirection.length()) {
@@ -133,15 +133,15 @@ export class RayMarchingAnim extends Anim {
 		return new Vec<3>([
 			dist
 			- this.distanceToScene(
-				new Vec<3>([x - RayMarchingAnim.SURF_DIST, y, z]),
+				new Vec<3>([x - RayMarchingSource.SURF_DIST, y, z]),
 			),
 			dist
 			- this.distanceToScene(
-				new Vec<3>([x, y - RayMarchingAnim.SURF_DIST, z]),
+				new Vec<3>([x, y - RayMarchingSource.SURF_DIST, z]),
 			),
 			dist
 			- this.distanceToScene(
-				new Vec<3>([x, y, z - RayMarchingAnim.SURF_DIST]),
+				new Vec<3>([x, y, z - RayMarchingSource.SURF_DIST]),
 			),
 		]).normalize()
 	}
