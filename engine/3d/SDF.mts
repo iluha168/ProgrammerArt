@@ -29,3 +29,12 @@ export const cylinder = (point: Vec<3>, height: number, radius: number) => {
 	return Math.min(Math.max(d.values[0], d.values[1]), 0)
 		+ d.max(0.0).length()
 }
+
+export const capsule = (point: Vec<3>, height: number, radius: number) => {
+	const [x, y, z] = point.values
+	return new Vec<3>([
+		x,
+		y - Math.max(Math.min(y, height), 0),
+		z,
+	]).length() - radius
+}
