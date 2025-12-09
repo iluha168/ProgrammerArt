@@ -1,6 +1,6 @@
 import type { Anim } from "../anim/Anim.mts"
 import { TranslateEffect } from "../anim/effect/TranslateEffect.mts"
-import { GroupAnim } from "../anim/core/GroupAnim.mts"
+import { GroupAnim } from "../anim/group/GroupAnim.mts"
 import { ExtractFrameAnim } from "../anim/core/ExtractFrameAnim.mts"
 
 export class ColumnRenderer {

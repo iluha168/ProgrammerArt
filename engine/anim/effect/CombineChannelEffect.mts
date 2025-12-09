@@ -1,5 +1,5 @@
 import { Frame } from "imagescript"
-import { GroupAnim } from "../core/GroupAnim.mts"
+import { GroupAnim } from "../group/GroupAnim.mts"
 import { RGBA } from "../../mathn/mod.mts"
 
 export class CombineChannelEffect extends GroupAnim {

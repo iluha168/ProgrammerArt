@@ -3,7 +3,7 @@ import { LCM, max } from "../../mathn/mod.mts"
 
 export class GroupAnim extends Anim {
 	constructor(
-		protected readonly children: Anim[],
+		protected readonly children: readonly Anim[],
 	) {
 		super(
 			children.map((ch) => ch.f).reduce(LCM),
