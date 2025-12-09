@@ -11,14 +11,14 @@ const scene = new TemporalAnim(
 		new MaskEffect(
 			new FunctionSource(
 				(x, y) => {
-					const s = t < Math.PI
-						? (Math.abs(Math.sin(2 * t)) / 8) + 1
-						: 1
+					const s = t < Math.PI ?
+						(Math.abs(Math.sin(2 * t)) / 8) + 1 :
+						1
 					x = (x - 0.5) * s
 					y = (0.6 - y) * s
-					return (x * x + y * y - .1) ** 3 < x * x * y ** 3
-						? new RGBA(0xFFFFFFFF)
-						: new RGBA(0)
+					return (x * x + y * y - .1) ** 3 < x * x * y ** 3 ?
+						new RGBA(0xFFFFFFFF) :
+						new RGBA(0)
 				},
 				16n,
 				16n,
@@ -26,13 +26,13 @@ const scene = new TemporalAnim(
 			),
 			new FunctionSource(
 				(x, y) => {
-					const s = t < Math.PI
-						? (Math.abs(Math.sin(2 * t)) * 0.3) + 1
-						: 1
+					const s = t < Math.PI ?
+						(Math.abs(Math.sin(2 * t)) * 0.3) + 1 :
+						1
 					const d = (x - 0.5 + 1 / 32) ** 2 + (y - 0.5 + 1 / 32) ** 2
 					return new HSVA(
-						(Math.sin(Math.sqrt(d + 0.1) * 6 - t * s) + 1)
-							/ 2,
+						(Math.sin(Math.sqrt(d + 0.1) * 6 - t * s) + 1) /
+							2,
 						0.9,
 						0.9,
 						1,

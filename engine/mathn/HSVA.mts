@@ -8,10 +8,10 @@ export class HSVA {
 		public readonly a: number,
 	) {
 		if (
-			h > 1 || h < 0
-			|| s > 1 || s < 0
-			|| v > 1 || v < 0
-			|| a > 1 || a < 0
+			h > 1 || h < 0 ||
+			s > 1 || s < 0 ||
+			v > 1 || v < 0 ||
+			a > 1 || a < 0
 		) {
 			throw new Error("All HSVA values must be in the [0; 1] range")
 		}

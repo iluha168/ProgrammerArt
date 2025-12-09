@@ -74,14 +74,14 @@ export class RayMarchingSource extends Anim {
 			.subVec(this.sizeHalf)
 			.mul(2)
 			.mulVec(this.sizeInv)
-		const rayDir = this.options.isometric
-			? new Vec<3>([0, 0, 1])
-			: new Vec<3>([...uv.values, 2]).normalize()
-		const rayOrigin = this.options.isometric
-			? this.options.camera.addVec(
+		const rayDir = this.options.isometric ?
+			new Vec<3>([0, 0, 1]) :
+			new Vec<3>([...uv.values, 2]).normalize()
+		const rayOrigin = this.options.isometric ?
+			this.options.camera.addVec(
 				new Vec<3>([...uv.values, 0]),
-			)
-			: this.options.camera
+			) :
+			this.options.camera
 		const objectDistance = this.bumpIntoObject(
 			rayOrigin,
 			rayDir,
@@ -92,8 +92,8 @@ export class RayMarchingSource extends Anim {
 		const objectPosition = rayOrigin.addVec(
 			rayDir.mul(objectDistance),
 		)
-		const lum = 0xFF
-			* this.luminosityAt(
+		const lum = 0xFF *
+			this.luminosityAt(
 				objectPosition,
 				this.options.lightSource,
 			)
@@ -131,16 +131,16 @@ export class RayMarchingSource extends Anim {
 		const dist = this.distanceToScene(point)
 		const [x, y, z] = point.values
 		return new Vec<3>([
-			dist
-			- this.distanceToScene(
+			dist -
+			this.distanceToScene(
 				new Vec<3>([x - RayMarchingSource.SURF_DIST, y, z]),
 			),
-			dist
-			- this.distanceToScene(
+			dist -
+			this.distanceToScene(
 				new Vec<3>([x, y - RayMarchingSource.SURF_DIST, z]),
 			),
-			dist
-			- this.distanceToScene(
+			dist -
+			this.distanceToScene(
 				new Vec<3>([x, y, z - RayMarchingSource.SURF_DIST]),
 			),
 		]).normalize()

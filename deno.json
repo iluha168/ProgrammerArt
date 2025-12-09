@@ -9,7 +9,7 @@
 		"newLineKind": "lf",
 		"nextControlFlowPosition": "maintain",
 		"singleBodyPosition": "maintain",
-		"operatorPosition": "nextLine",
+		"operatorPosition": "sameLine",
 		"quoteProps": "consistent",
 		"useTabs": true,
 		"useBraces": "preferNone",
