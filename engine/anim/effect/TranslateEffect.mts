@@ -4,21 +4,21 @@ import { Anim } from "../Anim.mts"
 export class TranslateEffect extends Anim {
 	constructor(
 		protected readonly child: Anim,
-		public readonly dx: bigint,
-		public readonly dy: bigint,
+		public readonly dx: number,
+		public readonly dy: number,
 	) {
 		super(
 			child.f,
-			child.w + dx,
-			child.h + dy,
+			BigInt(Math.floor(Number(child.w) + dx)),
+			BigInt(Math.floor(Number(child.h) + dy)),
 		)
 	}
 
 	public override writeFrame(t: bigint, onto = this.blankFrame()): Frame {
 		return onto.composite(
 			this.child.render(t),
-			Number(this.dx),
-			Number(this.dy),
+			this.dx,
+			this.dy,
 		)
 	}
 }

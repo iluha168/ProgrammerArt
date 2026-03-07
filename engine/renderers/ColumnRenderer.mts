@@ -11,8 +11,8 @@ export class ColumnRenderer {
 				(_, i) =>
 					new TranslateEffect(
 						new ExtractFrameAnim(anim, BigInt(i)),
-						0n,
-						BigInt(i) * anim.h,
+						0,
+						i * Number(anim.h),
 					),
 			),
 		).render(0n)
