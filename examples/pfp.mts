@@ -10,8 +10,8 @@ import { TranslateEffect } from "../engine/anim/effect/TranslateEffect.mts"
 import { CropEffect } from "../engine/anim/effect/CropEffect.mts"
 import { CacheAnim } from "../engine/anim/core/CacheAnim.mts"
 
-const W = 64n
-const H = W
+export const W = 64n
+export const H = W
 
 const background = new FunctionSource(
 	(x, y) => {
@@ -260,7 +260,7 @@ const sunglasses = new StackAnim([
 		.pipe((anim) => new CropEffect(anim, 0n, 0n, W, H)),
 ])
 
-const scene = new StackAnim([
+export const scene = new StackAnim([
 	background,
 	new MaskEffect(
 		body,
@@ -271,16 +271,18 @@ const scene = new StackAnim([
 	sun,
 ])
 
-const render = new ScaleEffect(scene, 16n, 16n).render(0n)
-await Deno.writeFile(
-	"out.png",
-	await render.encode(9, {
-		author: "iluha168",
-		copyright: "iluha168 All rights reserved",
-		creationTime: new Date(),
-		software: "https://github.com/iluha168/ProgrammerArt",
-		source:
-			"https://github.com/iluha168/ProgrammerArt/blob/pfp/examples/pfp.mts",
-		title: "Profile Picture",
-	}),
-)
+if (import.meta.main) {
+	const render = new ScaleEffect(scene, 16n, 16n).render(0n)
+	await Deno.writeFile(
+		"out.png",
+		await render.encode(9, {
+			author: "iluha168",
+			copyright: "iluha168 All rights reserved",
+			creationTime: new Date(),
+			software: "https://github.com/iluha168/ProgrammerArt",
+			source:
+				"https://github.com/iluha168/ProgrammerArt/blob/pfp/examples/pfp.mts",
+			title: "Profile Picture",
+		}),
+	)
+}
