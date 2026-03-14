@@ -34,6 +34,16 @@ export class RGBA {
 		)
 	}
 
+	lerp(other: RGBA, t: number): RGBA {
+		t = Math.max(0, Math.min(t, 1))
+		return RGBA.from(
+			this.r + (other.r - this.r) * t,
+			this.g + (other.g - this.g) * t,
+			this.b + (other.b - this.b) * t,
+			this.a + (other.a - this.a) * t,
+		)
+	}
+
 	static from(r: number, g: number, b: number, a: number): RGBA {
 		// deno-fmt-ignore
 		return new RGBA(
