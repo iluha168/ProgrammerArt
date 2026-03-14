@@ -15,13 +15,13 @@ export class MaskEffect extends Anim {
 	}
 
 	protected override writeFrame(t: bigint, onto = this.blankFrame()): Frame {
-		onto = this.child.render(t, onto)
+		const childRender = this.child.render(t, this.blankFrame())
 		const mask = this.mask.render(t, this.blankFrame())
-		for (let y = 1; y <= onto.height; y++) {
-			for (let x = 1; x <= onto.width; x++) {
-				const ontoPixel = new RGBA(onto.getPixelAt(x, y))
+		for (let y = 1; y <= childRender.height; y++) {
+			for (let x = 1; x <= childRender.width; x++) {
+				const ontoPixel = new RGBA(childRender.getPixelAt(x, y))
 				const maskPixel = new RGBA(mask.getPixelAt(x, y))
-				onto.setPixelAt(
+				childRender.setPixelAt(
 					x,
 					y,
 					RGBA.from(
@@ -33,6 +33,6 @@ export class MaskEffect extends Anim {
 				)
 			}
 		}
-		return onto
+		return onto.composite(childRender)
 	}
 }

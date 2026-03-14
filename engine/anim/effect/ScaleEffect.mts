@@ -15,12 +15,12 @@ export class ScaleEffect extends Anim {
 	}
 
 	protected override writeFrame(t: bigint, onto = this.blankFrame()): Frame {
-		onto = this.child.render(t)
-		onto.resize(
-			Number(this.wfactor) * onto.width,
-			Number(this.hfactor) * onto.height,
+		const childRender = this.child.render(t)
+		childRender.resize(
+			Number(this.w),
+			Number(this.h),
 			Image.RESIZE_NEAREST_NEIGHBOR,
 		)
-		return onto
+		return onto.composite(childRender)
 	}
 }
